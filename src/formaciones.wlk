@@ -40,9 +40,9 @@ class Formacion{
 
     method estaEquilibrada() = (self.vagonConPasajerosMax().capacidadMax() - self.vagonConPasajerosMin().capacidadMax()) <= 20
 
-    method estaOrganizada() = not (1..vagones.size()-1).any({i => not vagones.get(id-1).conPasajeros() and vagones.get(i).conPasajeros()})
+    method estaOrganizada() = not (1..vagones.size()-1).any({i => not vagones.get(i-1).conPasajeros() and vagones.get(i).conPasajeros()})
 
-    method pesoMax() = vagones.sum({vagon => vagon.pesoMax()})
+    method pesoVagones() = vagones.sum({vagon => vagon.pesoMax()})
 
     //locomotoras
      method agregarLocomotora(unaLocomotora){
@@ -63,5 +63,10 @@ class Formacion{
 
     method pesoAArrastrarMax() = locomotoras.sum({locomotora => locomotora.pesoAArrastrar()})
 
-    method kgEmpujeFaltantes() = 0.max( self.pesoMax() - self.pesoAArrastrarMax())
+    method kgEmpujeFaltantes() = 0.max( self.pesoTotal() - self.pesoAArrastrarMax())
+
+    method pesoLocomotoras() = locomotoras.sum(locomotora => locomotora.peso())
+
+    method pesoTotal() = self.pesoLocomotoras() + self.pesoVagones()
+
 }
